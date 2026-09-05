@@ -56,7 +56,7 @@ Client → POST /predict → TF-IDF + Logistic Regression (chargé une fois au d
   - `GET /dashboard` — page HTML avec graphique en direct (Chart.js) et un formulaire de test
   - `GET /health` — vérification de disponibilité
 - **Conteneur** : le modèle est entraîné **au moment du build Docker** (pas de binaire committé) — l'image est donc reproductible à partir du seul code source.
-- **CI** (`.github/workflows/ci.yml`) : à chaque push/PR sur `main` — installation, entraînement, tests (`pytest`), puis vérification que l'image Docker se construit.
+- **CI** (`.github/workflows/ci.yml`) : à chaque push/PR sur `main` — installation, entraînement, tests (`pytest`), puis vérification que l'image Docker se construit. ✅ CI verte.
 
 ## Installation locale
 
@@ -87,7 +87,6 @@ docker run -p 7860:7860 spam-detection-api
 - Le monitoring (`/stats`) est **en mémoire** : il repart à zéro à chaque redémarrage du conteneur. En production, ce serait une vraie base de séries temporelles (Prometheus, TimescaleDB...).
 - Modèle TF-IDF + régression logistique : rapide et déjà à 97.6% d'accuracy sur ce dataset, mais un modèle de langage (DistilBERT fine-tuné) capturerait mieux les tentatives de spam plus subtiles — non fait ici pour garder le service léger et rapide à démarrer.
 - Pas de détection de dérive (data drift) sur le texte entrant — un futur ajout logique du monitoring actuel.
-- Le build Docker n'a pas pu être testé de bout en bout dans cet environnement (Docker Desktop non démarré) — l'API elle-même, elle, a été testée en local (tests automatisés + appels manuels).
 
 ## Ce que j'ai appris
 
